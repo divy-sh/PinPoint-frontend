@@ -2,11 +2,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as client from '../User/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetUser } from '../User/reducer';
-import CircularSearchBox from '../Search/searchBar';
+import CircularSearchBox from '../Search/searchBar'; 
 import { useState } from 'react';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; 
+import { TiThMenu } from "react-icons/ti";
 import logo from '../logo.png'
-
-const LeftNav = () => {
+const LeftNavSm = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const user = useSelector((state: any) => state.userReducer.user);
@@ -16,24 +17,30 @@ const LeftNav = () => {
         dispatch(resetUser());
         navigate("/");
     };
+    const toggleMenu = () => {
+        setShowMenu(!showMenu);
+    };
 
     return (
         <>
-            <div className="d-none d-lg-block col-lg-3 p-4 position-fixed card" style={{ top: 0, left: 0, height: '100vh' }}>
+            <div>
+                <button className="btn btn-primary position-fixed d-none d-sm-block" type="button" data-bs-toggle="collapse" data-bs-target="#leftNavMenu" aria-expanded="false" aria-controls="leftNavMenu">
+                    <TiThMenu />
+                </button>
+            </div>
+            <div className={`collapse col-lg-3 p-2 position-fixed card ${showMenu ? 'show' : ''}`} id="leftNavMenu" style={{ height: '80%', zIndex: 9999  }}>
+                <button className="btn-close position-absolute top-0 end-0 m-3" onClick={toggleMenu}></button>
                 <div className="d-flex">
-                    <div className="col-3 pb-2">
-                        <img src={logo} alt="login" className="rounded-circle" style={{ height: '100%', width: '100%' }} />
+                    <div className="col-3">
+                        <img src={logo} alt="login" className="rounded-circle m-2" style={{ height: '80%', width: '80%' }} />
                     </div>
-                    <div className="text-center">
-                        <Link to="/home/trending" className="d-flex align-items-center ps-3 pt-2 text-decoration-none fs-4">
+                    <div className='pt-4'>
+                        <Link to="/home/trending" className="d-flex align-items-center p-4 text-decoration-none fs-4">
                             Pin Point
                         </Link>
                     </div>
                 </div>
-                <div>
-                    <CircularSearchBox />
-                </div>
-
+                <CircularSearchBox />
                 <ul className="nav nav-pills flex-column mb-auto">
                     <li className="nav-item">
                         <Link to="/home/trending" className="nav-link w-100 mb-2" aria-current="page">
@@ -55,8 +62,6 @@ const LeftNav = () => {
                 </ul>
             </div>
         </>
-
-
     );
 };
-export default LeftNav;
+export default LeftNavSm;

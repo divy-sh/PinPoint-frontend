@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { findUserById } from './client';
 import LeftNav from '../Home/leftnav';
@@ -10,6 +10,7 @@ import RightNav from '../Home/rightnav';
 import { ClickableImage } from '../Post/clickableImage';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LeftNavSm from '../Home/leftnavsm';
 
 const UserProfile = () => {
     const [userPosts, setUserPosts] = useState([]);
@@ -44,7 +45,7 @@ const UserProfile = () => {
                     const response = await findUserById(profileId);
                     setUser(response);
                 }
-            } catch (error:any) {
+            } catch (error: any) {
                 toast.error(error.response.data);
                 console.error('Error fetching user data:', error);
             }
@@ -58,13 +59,16 @@ const UserProfile = () => {
     }, [profileId]);
     return (
         <div className="container">
-            <ToastContainer/>
+            <ToastContainer />
             <nav className="nav nav-underline justify-content-center">
                 <div className="nav-link active mb-4">
                     <h5>Profile</h5>
                 </div>
             </nav>
             <div className="row">
+                <div className="d-none d-sm-block">
+                    <LeftNavSm />
+                </div>
                 <div className="col-lg-3 d-none d-lg-block">
                     <LeftNav />
                 </div>
@@ -76,7 +80,7 @@ const UserProfile = () => {
                                     <img
                                         className="me-2"
                                         src={user.image === undefined || user.image === '' ? "/default.jpg" : user.image}
-                                        alt="profile-image"
+                                        alt="profile-pic"
                                         style={{ maxWidth: "80px", borderRadius: '50%' }}
                                     />
                                     <div>
@@ -140,8 +144,8 @@ const UserProfile = () => {
                         ))}
                     </div>
                 </div>
-                <div className='col-lg-3 d-block-lg'>
-                    <RightNav/>
+                <div className='col-lg-3 d-none d-lg-block'>
+                    <RightNav />
                 </div>
             </div>
         </div>

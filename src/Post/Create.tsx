@@ -44,17 +44,18 @@ const CreatePost = ({ isOpen, onClose }: { isOpen: boolean; onClose: any }) => {
     return cleanupFunction;
   }, [isOpen]);
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: any) => {
     var post: Post = {
       userid: userObj._id,
       image: image,
       options: voteOptions,
       date: new Date().toISOString(),
       reactions: [],
+      user: userObj
     };
     setShowDropdown(false);
-    client.createPost(post);
-    post.user = userObj;
+    // post.user = userObj;
+    await client.createPost(post);
     dispatch(addPost(post));
     navigate("/");
   };
@@ -235,14 +236,14 @@ const CreatePost = ({ isOpen, onClose }: { isOpen: boolean; onClose: any }) => {
         )}
         <input
           type="file"
-          className="form-control"
+          className="form-control mt-1"
           id="image"
           onChange={handleFileChange}
         />
         {!showDropdown && (
           <input
             type="text"
-            className="form-control"
+            className="form-control mt-1"
             onChange={(e) => handleSearchDebounced(e.target.value)}
           />
         )}

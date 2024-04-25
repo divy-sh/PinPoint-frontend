@@ -1,15 +1,19 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { RiUserFollowFill, RiUserFollowLine } from "react-icons/ri";
 import * as postClient from '../Home/client';
-import { updatePost } from '../Home/reducer';
+import { updatePost, deletePost } from '../Home/reducer';
 import * as userClient from '../User/client';
 import { setUser } from '../User/reducer';
 import { ClickableImage } from './clickableImage';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const Post = ({ post }: { post: any }) => {
+const Post = ({ post, deletable }: { post: any, deletable: any }) => {
     const dispatch = useDispatch();
+    const { postId } = useParams();
+    const navigate = useNavigate()
     var user = useSelector((state: any) => state.userReducer.user);
     const react = async (add: boolean) => {
         var newPost = {}
@@ -40,14 +44,27 @@ const Post = ({ post }: { post: any }) => {
         dispatch(updatePost(newPost));
     };
 
+    const handleDelete = async () => {
+        try {
+            await postClient.deletePost(postId);
+            dispatch(deletePost(postId));
+        } catch (error: any) {
+            toast.error(error.response.data);
+            console.error('Error deleting ad:', error);
+        }
+        navigate("/")
+    }
+
     return (
         <div className="card m-4">
+            <ToastContainer />
             <div className="container">
                 <div className="row align-items-center">
                     <div className="col-md-6">
-                        <Link className="nav-link" to={`/profile/${post.userid}`}>
-                            {post.user.username}
-                        </Link>
+                        {post && post.user? (<Link className="nav-link" to={`/profile/${post.userid}`}>
+                            {post.user.username ? (post.user.username) : (null)}
+                        </Link>) : (null)}
+
                     </div>
                     {user._id !== '' && (
                         <div className="col-md-6 text-end">
@@ -74,20 +91,28 @@ const Post = ({ post }: { post: any }) => {
             </div>
             <ClickableImage post={post} />
             <div className="container">
-                <div className="row align-items-center my-3">
-                    {user._id !== '' ? (
-                        <div className="col-auto">
-                            {post.reactions.includes(user._id) ? (
-                                <FaHeart onClick={() => react(false)} />
-                            ) : (
-                                <FaRegHeart onClick={() => react(true)} />
-                            )}
-                            {post.reactions.length > 0 && ` ${post.reactions.length} likes`}
+                <div>
+                    <div className="row align-items-center my-3">
+                        {user._id !== '' ? (
+                            <div className="col-auto">
+                                {post.reactions.includes(user._id) ? (
+                                    <FaHeart onClick={() => react(false)} />
+                                ) : (
+                                    <FaRegHeart onClick={() => react(true)} />
+                                )}
+                                {post.reactions.length > 0 && ` ${post.reactions.length} likes`}
+                            </div>
+                        ) : (
+                            <div className="col-auto">{` ${post.reactions.length} likes`}</div>
+                        )}
+                    </div>
+                    {deletable && user._id == post.user._id &&
+                        <div>
+                            <button className="btn btn-primary" onClick={handleDelete}>Delete</button>
                         </div>
-                    ) : (
-                        <div className="col-auto">{` ${post.reactions.length} likes`}</div>
-                    )}
+                    }
                 </div>
+
                 <div className="row">
                     {user._id !== '' && (
                         <div className="col-12">
@@ -132,7 +157,7 @@ const Post = ({ post }: { post: any }) => {
                                         </div>
                                     </div>
                                     <div className="row">
-                                    <div className="col-6">
+                                        <div className="col-6">
                                             {
                                                 post.options[3] == post.options[5] && post.votes[user._id] == 3 &&
                                                 <button className="btn btn-success w-100 mb-2 disabled">{post.options[3]}</button>

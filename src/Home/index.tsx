@@ -7,6 +7,8 @@ import LeftNav from './leftnav';
 import { useState } from 'react';
 import CreatePost from '../Post/Create';
 import RightNav from './rightnav';
+import LeftNavSm from './leftnavsm';
+
 
 const Home = () => {
   const { pathname } = useLocation();
@@ -25,6 +27,9 @@ const Home = () => {
       </nav>
       <div className='container'>
         <div className='row'>
+          <div className="d-none d-sm-block">
+            <LeftNavSm/>
+          </div>
           <div className='col-lg-3 d-block-lg'>
             <LeftNav />
           </div>
@@ -39,7 +44,7 @@ const Home = () => {
               <Route path='*' element={<Navigate to={'/'} />} />
             </Routes>
           </div>
-          <div className='col-lg-3 d-block-lg'>
+          <div className='col-lg-3 d-none d-lg-block'>
             <RightNav />
           </div>
         </div>

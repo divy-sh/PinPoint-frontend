@@ -19,6 +19,7 @@ export const findFollowingPosts = async (userid: any, page: any, size: any) => {
 
 export const createPost = async (post: any) => {
     const token = localStorage.getItem('token');
+    console.log("inside client.ts, service", post)
     const Response = await api.post(`${POSTS_API}`, post, {headers: { 'Authorization': `Bearer ${token}`,}})
     return Response.data;
 }
@@ -31,6 +32,12 @@ export const findUserPost = async (userid: any) => {
 export const updatePost = async (postId: any, post: any) => {
     const token = localStorage.getItem('token');
     const Response = await api.put(`${POSTS_API}/${postId}`, post, {headers: { 'Authorization': `Bearer ${token}`,}})
+    return Response.data;
+}
+
+export const deletePost = async (postId :any) => {
+    const token = localStorage.getItem('token');
+    const Response = await api.delete(`${POSTS_API}/${postId}`, {headers: { 'Authorization': `Bearer ${token}`,}})
     return Response.data;
 }
 

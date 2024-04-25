@@ -22,7 +22,7 @@ const CircularSearchBox = () => {
                 <div className="col-8">
                     <input
                         type="text"
-                        className="form-control rounded-pill m-2"
+                        className="form-control rounded-pill me-2 mt-2 mb-2"
                         placeholder="Search..."
                         value={searchTerm}
                         onChange={handleInputChange}

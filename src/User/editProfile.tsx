@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router';
 import * as client from './client';
 import * as userReducer from './reducer'
 import LeftNav from '../Home/leftnav';
+import LeftNavSm from '../Home/leftnavsm';
 
 const EditProfile = () => {
     const dispatch = useDispatch()
@@ -85,6 +86,9 @@ const EditProfile = () => {
     return (
         <div className="container">
             <div className="row">
+                <div className="d-none d-sm-block">
+                    <LeftNavSm />
+                </div>
                 <div className="col-lg-3 d-none d-lg-block">
                     <LeftNav />
                 </div>
@@ -180,7 +184,7 @@ const EditProfile = () => {
                     </button>
                 </div>
                 <div className="col-lg-3">
-                    
+
                 </div>
             </div>
         </div>

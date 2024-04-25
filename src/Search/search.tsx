@@ -10,6 +10,7 @@ import { Spinner } from "./Spinner";
 import RightNav from "../Home/rightnav";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LeftNavSm from "../Home/leftnavsm";
 
 const Search = () => {
   const { searchTerm } = useParams();
@@ -51,7 +52,7 @@ const Search = () => {
           const response = await searchClient.searchUsers(searchTerm);
           setUsers(response);
         }
-      } catch (error:any) {
+      } catch (error: any) {
         toast.error(error.response.data);
         console.error("Error fetching user data:", error);
       }
@@ -62,7 +63,7 @@ const Search = () => {
           const response = await searchClient.searchPosts(searchTerm);
           setPosts(response);
         }
-      } catch (error:any) {
+      } catch (error: any) {
         toast.error(error.response.data);
         console.error("Error fetching user data:", error);
       }
@@ -73,7 +74,7 @@ const Search = () => {
         if (searchTerm !== undefined) {
           await fetchCities(searchTerm);
         }
-      } catch (error:any) {
+      } catch (error: any) {
         toast.error(error.response.data);
         console.error("Error fetching user data:", error);
       }
@@ -85,8 +86,11 @@ const Search = () => {
 
   return (
     <div className="container">
-      <ToastContainer/>
+      <ToastContainer />
       <div className="row">
+        <div className="d-none d-sm-block">
+          <LeftNavSm />
+        </div>
         <div className="col-lg-3 d-none d-lg-block">
           <LeftNav />
         </div>
@@ -131,7 +135,7 @@ const Search = () => {
             </div>
           </div>
         </div>
-        <div className="col-lg-3">
+        <div className="col-lg-3 d-none d-lg-block">
           <RightNav />
         </div>
       </div>

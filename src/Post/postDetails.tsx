@@ -1,18 +1,15 @@
-import { Routes, Route, Navigate, useParams } from "react-router"
+import { useParams } from "react-router"
 import LeftNav from "../Home/leftnav"
 import RightNav from "../Home/rightnav"
-import { useDispatch, useSelector } from "react-redux"
 import * as client from "../Home/client"
-import { setPosts } from "../Home/reducer"
 import { useEffect, useState } from "react"
 import Post from "./post"
+import LeftNavSm from "../Home/leftnavsm"
 
 export const PostDetails = () => {
-    const dispatch = useDispatch();
     const { postId } = useParams();
     const [currentPost, setCurrentPost] = useState(null);
 
-    const user = useSelector((state: any) => state.userReducer.user);
 
     const findPost = async () => {
         const currentPostsByUser = await client.getPostById(postId);
@@ -30,9 +27,9 @@ export const PostDetails = () => {
                     <LeftNav />
                 </div>
                 <div className='col-lg-6'>
-                {currentPost && <Post key={postId} post={currentPost} />}
+                    {currentPost && <Post key={postId} post={currentPost} deletable={true} />}
                 </div>
-                <div className='col-lg-3 d-block-lg'>
+                <div className='col-lg-3 d-none d-lg-block'>
                     <RightNav />
                 </div>
             </div>

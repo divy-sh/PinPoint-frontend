@@ -26,7 +26,7 @@ const Trending = () => {
     return (
         <div className='m-4'>
             {currentPosts.map((post: any, index: any) => (
-                <Post key={post._id} post={post} />
+                <Post key={post._id} post={post} deletable={false} />
             ))}
             <div>
                 <button

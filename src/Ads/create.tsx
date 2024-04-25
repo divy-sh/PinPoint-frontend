@@ -1,11 +1,9 @@
-import axios from 'axios';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import * as client from '../Ads/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { addAd } from '../Ads/reducer';
-import { url } from 'inspector';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,9 +12,18 @@ const CreateAd = ({ isOpen, onClose }: { isOpen: boolean, onClose: any }) => {
     const [description, setDescription] = useState("");
     const [image, setImage] = useState("");
     const [url, setUrl] = useState("");
+    const [isFormValid, setIsFormValid] = useState(false); // State to track form validation
     const user = useSelector((state: any) => state.userReducer.user);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    const validateForm = () => {
+        return title.trim() !== "" && description.trim() !== "" && image !== "" && url.trim() !== "";
+    };
+
+    useEffect(() => {
+        setIsFormValid(validateForm());
+    }, [title, description, image, url]);
 
     const handleSubmit = (e: any) => {
         const ad = {
@@ -33,7 +40,7 @@ const CreateAd = ({ isOpen, onClose }: { isOpen: boolean, onClose: any }) => {
             client.createAd(ad);
             dispatch(addAd(ad));
             navigate("/");
-        } catch (error :any) {
+        } catch (error: any) {
             toast.error(error.response.data);
             console.error('Error creating ad:', error);
         }
@@ -49,7 +56,7 @@ const CreateAd = ({ isOpen, onClose }: { isOpen: boolean, onClose: any }) => {
             };
         }
     };
-    const root: any = document.getElementsByName('root');
+
     return (
         <Modal style={{
             content: {
@@ -60,35 +67,47 @@ const CreateAd = ({ isOpen, onClose }: { isOpen: boolean, onClose: any }) => {
                 marginRight: '-50%',
                 transform: 'translate(-50%, -50%)',
             }
-        }} isOpen={isOpen} onRequestClose={onClose} contentLabel="Create Ad" appElement={root}>
+        }}
+            isOpen={isOpen}
+            onRequestClose={onClose}
+            contentLabel="Create Ad"
+        >
+            <ToastContainer />
             <div style={{ textAlign: 'center' }}>
-                <ToastContainer/>
-                {image === "" && <svg width="500" height="500" viewBox="0 0 100 100"><rect width="100" height="100" fill="#CCC" /></svg>}
+                {image === "" && (
+                    <svg width="400" height="400" viewBox="0 0 100 100">
+                        <rect width="100" height="100" fill="#CCC" />
+                    </svg>
+                )}
                 {image !== "" && <img width="500" height="500" style={{ objectFit: 'cover' }} src={image} alt="Ad Image" />}
-                <input type="file" className='form-control' id="image" onChange={handleFileChange} />
                 <input
-                    className='form-control'
+                    type="file"
+                    className='form-control mt-1'
+                    id="image"
+                    onChange={handleFileChange}
+                />
+                <input
+                    className='form-control mt-1'
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Enter ad title"
+                    placeholder="Enter Ad title"
                 />
                 <input
-                    className='form-control'
+                    className='form-control mt-1'
                     type="text"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Enter ad description"
                 />
-
                 <input
-                    className='form-control'
+                    className='form-control mt-1'
                     type="text"
                     value={url}
                     onChange={(e) => setUrl(e.target.value)}
                     placeholder="Enter URL"
                 />
-                <button className='btn btn-primary m-2' onClick={handleSubmit}>Create Ad</button>
+                <button className={`btn btn-primary m-2 ${!isFormValid && 'disabled'}`} onClick={handleSubmit} disabled={!isFormValid}>Create Ad</button>
                 <button className='btn btn-danger m-2' onClick={onClose}>Cancel</button>
             </div>
         </Modal>

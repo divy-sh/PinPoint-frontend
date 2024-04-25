@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import * as client from '../Ads/client';
-import { setAds, deleteAd, updateAd } from '../Ads/reducer';
+import { setAds} from '../Ads/reducer';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import LeftNav from '../Home/leftnav';
-import AdCard from '../Ads/adcomponent';
 import AdminAds from './adminads';
 import AdminUsers from './adminusers';
 import RightNav from '../Home/rightnav';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import LeftNavSm from '../Home/leftnavsm';
 
 const Admin = () => {
     const { pathname } = useLocation();
@@ -22,7 +22,7 @@ const Admin = () => {
             try {
                 const userAds = await client.findAllAds();
                 dispatch(setAds(userAds));
-            } catch (error : any) {
+            } catch (error: any) {
                 toast.error(error.response.data);
                 console.error('Error fetching ads:', error);
             }
@@ -33,9 +33,12 @@ const Admin = () => {
 
     return (
         <div>
-            <ToastContainer/>
+            <ToastContainer />
             <div className="container">
                 <div className="row">
+                    <div className="d-none d-sm-block">
+                        <LeftNavSm />
+                    </div>
                     <div className="col-3 d-block-lg">
                         <LeftNav />
                     </div>
@@ -49,7 +52,7 @@ const Admin = () => {
                             <Route path="users" element={<AdminUsers />} />
                         </Routes>
                     </div>
-                    <div className="col-3">
+                    <div className="col-3 d-none d-lg-block">
                         <RightNav />
                     </div>
                 </div>

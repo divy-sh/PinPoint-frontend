@@ -39,7 +39,7 @@ In the project directory, you can run:
   npm test
   ```
 
-  Launches the test runner in interactive watch mode. Refer to the [running tests](https://facebook.github.io/create-react-app/docs/running-tests) section for more information.
+  Launches the test runner in interactive watch mode.
 
 - **Build for Production**:
 
@@ -48,8 +48,6 @@ In the project directory, you can run:
   ```
 
   Builds the app for production to the `build` folder. It correctly bundles React in production mode and optimizes the build for the best performance. The build is minified, and the filenames include the hashes. Your app is ready to be deployed!
-
-  Refer to the [deployment](https://facebook.github.io/create-react-app/docs/deployment) section for more information.
 
 ## Contributors
 

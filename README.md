@@ -21,6 +21,13 @@ Before setting up the project, ensure that Node.js is installed on your system. 
    npm install
    ```
 
+3. **Setup Environment varialbes**:
+
+  Setup backend base URL
+  ```bash
+  REACT_APP_API_BASE=https://localhost:4000
+  ```
+
 ### Available Scripts
 
 In the project directory, you can run:

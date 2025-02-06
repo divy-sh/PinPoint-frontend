@@ -15,8 +15,7 @@ export const PostDetails = () => {
     }
     useEffect(() => {
         findPost();
-        console.log(currentPost);
-    }, []);
+    });
     return (
         <div className='container'>
             <LeftNavSm />
